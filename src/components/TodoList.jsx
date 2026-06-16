@@ -1,0 +1,16 @@
+import TodoItem from "./TodoItem";
+
+export default function TodoList({filteredTodos, deleteTodo, toggleTodo}) {
+    return(
+        <div className="todo-list">
+            {filteredTodos.map((todo) => (
+                <TodoItem 
+                    key={todo.id}
+                    todo={todo}
+                    deleteTodo={deleteTodo}
+                    toggleTodo={toggleTodo}
+                />
+            ))}
+        </div>
+    )
+}

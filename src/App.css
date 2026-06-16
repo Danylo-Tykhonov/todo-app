@@ -55,6 +55,11 @@ button:hover {
     border: none;
 }
 
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
 .filter-buttons {
     display: flex;
     justify-content: center;

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 
-export default function useTodos() {
     const initialTodos = [
         {
             id:1, text: "Breakfast", completed: true
@@ -10,12 +9,15 @@ export default function useTodos() {
             id:2, text: "Dinner", completed: false
         }
     ]
+
+export default function useTodos() {
     const [todos, setTodos] = useState(() => {
         const saved = localStorage.getItem("todos")
         return saved ? JSON.parse(saved) : initialTodos;
     });
     const [input, setInput] = useState("");
     const [filter, setFilter] = useState("all")
+    const [error, setError] = useState("");
 
     useEffect(() => {
         localStorage.setItem("todos", JSON.stringify(todos))
@@ -32,13 +34,15 @@ export default function useTodos() {
     }
 
     const addTodo = () => {
-        if(input.trim() === ""){
+        const text = input.trim();
+        if(text === ""){
             return;
         }
-        if(todos.some(todo => todo.text === input)){
+        if(todos.some(todo => todo.text === text)){
+            setError("This task already exists");
             return;
         }
-        setTodos((prev) => [... prev, {id: Date.now(), text: input, completed: false}]
+        setTodos((prev) => [... prev, {id: Date.now(), text: text, completed: false}]
     )
         setInput("");
 }
@@ -56,7 +60,12 @@ export default function useTodos() {
         })
     }
 
+    const handleInputChange = (value) => {
+        setInput(value)
+        setError("");
+    }
+
     return {
-        todos, input, deleteTodo, addTodo, filter, filteredTodos, toggleTodo, setFilter, setInput
+        todos, input, error, handleInputChange, deleteTodo, addTodo, filter, filteredTodos, toggleTodo, setFilter, setInput
     }
 }
