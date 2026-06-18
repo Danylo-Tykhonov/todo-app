@@ -1,6 +1,6 @@
 import TodoItem from "./TodoItem";
 
-export default function TodoList({filteredTodos, deleteTodo, toggleTodo}) {
+export default function TodoList({filteredTodos, deleteTodo, toggleTodo, editing}) {
     return(
         <div className="todo-list">
             {filteredTodos.map((todo) => (
@@ -9,6 +9,7 @@ export default function TodoList({filteredTodos, deleteTodo, toggleTodo}) {
                     todo={todo}
                     deleteTodo={deleteTodo}
                     toggleTodo={toggleTodo}
+                    editing={editing}
                 />
             ))}
         </div>

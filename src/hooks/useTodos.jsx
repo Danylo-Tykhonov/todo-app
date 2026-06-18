@@ -18,6 +18,8 @@ export default function useTodos() {
     const [input, setInput] = useState("");
     const [filter, setFilter] = useState("all")
     const [error, setError] = useState("");
+    const [edit, setEdit] = useState(null);
+    const [editText, setEditText] = useState("");
 
     useEffect(() => {
         localStorage.setItem("todos", JSON.stringify(todos))
@@ -28,6 +30,8 @@ export default function useTodos() {
         if(filter === "completed") return todo.completed;
         if(filter === "active") return !todo.completed;
     })
+
+    const activeTodos = todos.filter(todo => !todo.completed).length;
 
     const deleteTodo = (id) => {
         setTodos(prev => prev.filter((todo) => todo.id !== id));
@@ -65,7 +69,44 @@ export default function useTodos() {
         setError("");
     }
 
+    const editing = (id, text) => {
+        setEdit(id);
+        setEditText(text);
+        setInput(text);
+    }
+
+    const cancelEdit = () => {
+        setEdit(null);
+        setInput("");
+        setEditText("");
+    }
+
+    const saveEdit = () => {
+        const text = input.trim();
+        if(text === "") {
+            return;
+        }
+        if(todos.some(todo => todo.text === text && todo.id !== edit)) {
+            setError("This task already exists");
+            return;
+        }
+        setTodos((prev) => {
+            return prev.map((todo) => {
+                if(todo.id === edit){
+                    return {... todo, text}
+                }
+                else{
+                    return todo;
+                }
+            })
+        })
+        setEdit(null);
+        setInput("");
+        setEditText("");
+        setError("");
+    }
+
     return {
-        todos, input, error, handleInputChange, deleteTodo, addTodo, filter, filteredTodos, toggleTodo, setFilter, setInput
+        todos, input, error, edit, editing, saveEdit, cancelEdit, handleInputChange, deleteTodo, addTodo, filter, filteredTodos, toggleTodo, setFilter, setInput, activeTodos
     }
 }
