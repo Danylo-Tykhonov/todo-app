@@ -1,4 +1,4 @@
-export default function FilterButtons({filter, setFilter}) {
+export default function FilterButtons({filter, setFilter, clearCompleted}) {
     return(
         <div className="filter-buttons">
             <button className={filter === "all" ? "active-filter" : ""}
@@ -7,6 +7,9 @@ export default function FilterButtons({filter, setFilter}) {
             onClick={() => setFilter("active")}>Active</button>
             <button className={filter === "completed" ? "active-filter" : ""}
             onClick={() => setFilter("completed")}>Completed</button>
+            <button onClick={clearCompleted}>
+                Clear Completed
+            </button>
         </div>
     )
 }

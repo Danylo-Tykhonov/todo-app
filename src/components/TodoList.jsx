@@ -1,6 +1,9 @@
 import TodoItem from "./TodoItem";
 
-export default function TodoList({filteredTodos, deleteTodo, toggleTodo, editing}) {
+export default function TodoList({filteredTodos, deleteTodo, toggleTodo, startEdit, edit, updateTodo, cancelEdit}) {
+    if(filteredTodos.length === 0) {
+        return <div>No tasks</div>
+    }
     return(
         <div className="todo-list">
             {filteredTodos.map((todo) => (
@@ -9,7 +12,11 @@ export default function TodoList({filteredTodos, deleteTodo, toggleTodo, editing
                     todo={todo}
                     deleteTodo={deleteTodo}
                     toggleTodo={toggleTodo}
-                    editing={editing}
+                    startEdit={startEdit}
+                    edit={edit}
+                    cancelEdit={cancelEdit}
+                    updateTodo={updateTodo}
+
                 />
             ))}
         </div>

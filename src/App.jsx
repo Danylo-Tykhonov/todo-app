@@ -5,7 +5,7 @@ import FilterButtons from "./components/FilterButtons";
 import TodoForm from "./components/TodoForm";
 
 export default function App(){
-    const {input, error, handleInputChange, deleteTodo, edit, editing, saveEdit, cancelEdit, addTodo, filter, filteredTodos, toggleTodo, setFilter, activeTodos} = useTodos();
+    const {input, error, handleInputChange, deleteTodo, edit, startEdit, cancelEdit, addTodo, filter, filteredTodos, toggleTodo, setFilter, activeTodos, clearCompleted, updateTodo} = useTodos();
     return(
         <div className="app">
         
@@ -13,9 +13,6 @@ export default function App(){
                 input={input}
                 handleInputChange={handleInputChange}
                 addTodo={addTodo}
-                edit={edit}
-                saveEdit={saveEdit}
-                cancelEdit={cancelEdit}
             />
 
             <div className="counter">
@@ -27,13 +24,17 @@ export default function App(){
             <FilterButtons 
                 filter={filter}
                 setFilter={setFilter}
+                clearCompleted={clearCompleted}
             />
            
             <TodoList
                 filteredTodos={filteredTodos}
                 deleteTodo={deleteTodo}
                 toggleTodo={toggleTodo}
-                editing={editing}
+                updateTodo={updateTodo}
+                cancelEdit={cancelEdit}
+                startEdit={startEdit}
+                edit={edit}
             />
         </div>
     )

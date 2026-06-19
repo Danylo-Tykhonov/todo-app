@@ -19,7 +19,6 @@ export default function useTodos() {
     const [filter, setFilter] = useState("all")
     const [error, setError] = useState("");
     const [edit, setEdit] = useState(null);
-    const [editText, setEditText] = useState("");
 
     useEffect(() => {
         localStorage.setItem("todos", JSON.stringify(todos))
@@ -37,12 +36,20 @@ export default function useTodos() {
         setTodos(prev => prev.filter((todo) => todo.id !== id));
     }
 
+    const clearCompleted = () => {
+        setTodos(prev => prev.filter((todo) => !todo.completed))
+    }
+
+    const isDuplicate = (text, id = null) => {
+        return todos.some(todo => todo.text.toLowerCase() === text.toLowerCase() && todo.id !== id)
+    }
+
     const addTodo = () => {
         const text = input.trim();
         if(text === ""){
             return;
         }
-        if(todos.some(todo => todo.text === text)){
+        if(isDuplicate(text)){
             setError("This task already exists");
             return;
         }
@@ -50,6 +57,29 @@ export default function useTodos() {
     )
         setInput("");
 }
+
+    const updateTodo = (id, text) => {
+        const value = text.trim();
+        if(value === ""){
+            return;
+    }
+
+        if(isDuplicate(value, id)){
+            setError("This task already exists");
+            return;
+    }
+        setTodos((prev) => {
+            return prev.map((todo) => {
+                if(todo.id === id) {
+                    return {...todo, text: value}
+                }
+                
+                return todo;
+            })
+        })
+        setEdit(null);
+        setError("");
+    }
 
     const toggleTodo = (id) => {
         setTodos((prev) => {
@@ -69,44 +99,15 @@ export default function useTodos() {
         setError("");
     }
 
-    const editing = (id, text) => {
+    const startEdit = (id) => {
         setEdit(id);
-        setEditText(text);
-        setInput(text);
     }
 
     const cancelEdit = () => {
         setEdit(null);
-        setInput("");
-        setEditText("");
-    }
-
-    const saveEdit = () => {
-        const text = input.trim();
-        if(text === "") {
-            return;
-        }
-        if(todos.some(todo => todo.text === text && todo.id !== edit)) {
-            setError("This task already exists");
-            return;
-        }
-        setTodos((prev) => {
-            return prev.map((todo) => {
-                if(todo.id === edit){
-                    return {... todo, text}
-                }
-                else{
-                    return todo;
-                }
-            })
-        })
-        setEdit(null);
-        setInput("");
-        setEditText("");
-        setError("");
     }
 
     return {
-        todos, input, error, edit, editing, saveEdit, cancelEdit, handleInputChange, deleteTodo, addTodo, filter, filteredTodos, toggleTodo, setFilter, setInput, activeTodos
+        todos, input, error, edit, startEdit, cancelEdit, handleInputChange, deleteTodo, addTodo, filter, filteredTodos, toggleTodo, setFilter, clearCompleted, activeTodos, updateTodo
     }
 }
