@@ -80,11 +80,16 @@ button:disabled {
 
 .todo-buttons {
     display: flex;
-    gap: 8px
+    gap: 8px;
 }
 
 .todo-text {
     flex: 1 
+}
+
+.todo-date {
+    font-size: 14px;
+    opacity: 0.6;
 }
 
 .completed {

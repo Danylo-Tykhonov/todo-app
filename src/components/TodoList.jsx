@@ -1,4 +1,5 @@
 import TodoItem from "./TodoItem";
+import { AnimatePresence } from "framer-motion";
 
 export default function TodoList({filteredTodos, deleteTodo, toggleTodo, startEdit, edit, updateTodo, cancelEdit}) {
     if(filteredTodos.length === 0) {
@@ -6,6 +7,7 @@ export default function TodoList({filteredTodos, deleteTodo, toggleTodo, startEd
     }
     return(
         <div className="todo-list">
+            <AnimatePresence>
             {filteredTodos.map((todo) => (
                 <TodoItem 
                     key={todo.id}
@@ -16,9 +18,9 @@ export default function TodoList({filteredTodos, deleteTodo, toggleTodo, startEd
                     edit={edit}
                     cancelEdit={cancelEdit}
                     updateTodo={updateTodo}
-
                 />
             ))}
+            </AnimatePresence>
         </div>
     )
 }

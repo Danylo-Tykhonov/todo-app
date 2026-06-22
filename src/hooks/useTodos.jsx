@@ -2,11 +2,11 @@ import { useEffect, useState } from "react"
 
     const initialTodos = [
         {
-            id:1, text: "Breakfast", completed: true
+            id:1, text: "Breakfast", completed: true, createdAt: Date.now()
         },
 
         {
-            id:2, text: "Dinner", completed: false
+            id:2, text: "Dinner", completed: false, createdAt: Date.now() 
         }
     ]
 
@@ -53,7 +53,11 @@ export default function useTodos() {
             setError("This task already exists");
             return;
         }
-        setTodos((prev) => [... prev, {id: Date.now(), text: text, completed: false}]
+        setTodos((prev) => [... prev, 
+            {
+                id: Date.now(), text: text, completed: false, createdAt: Date.now()
+            }
+        ]
     )
         setInput("");
 }
