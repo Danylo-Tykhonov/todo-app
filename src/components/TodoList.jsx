@@ -1,7 +1,7 @@
 import TodoItem from "./TodoItem";
 import { AnimatePresence } from "framer-motion";
 
-export default function TodoList({filteredTodos, deleteTodo, toggleTodo, startEdit, edit, updateTodo, cancelEdit}) {
+export default function TodoList({filteredTodos, handleDrop, handleDragEnd, handleDragStart, deleteTodo, toggleTodo, startEdit, edit, updateTodo, cancelEdit, draggedId}) {
     if(filteredTodos.length === 0) {
         return <div>No tasks</div>
     }
@@ -18,6 +18,10 @@ export default function TodoList({filteredTodos, deleteTodo, toggleTodo, startEd
                     edit={edit}
                     cancelEdit={cancelEdit}
                     updateTodo={updateTodo}
+                    draggedId={draggedId}
+                    handleDrop={handleDrop}
+                    handleDragStart={handleDragStart}
+                    handleDragEnd={handleDragEnd}
                 />
             ))}
             </AnimatePresence>

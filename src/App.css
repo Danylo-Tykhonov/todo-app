@@ -72,10 +72,25 @@ button:disabled {
     align-items: center;
     padding: 10px;
     border-bottom: 1px solid #eee;
+    border-radius: 10px;
+    transition: background-color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+    cursor: grab;
+    background-color: white;
 }
 
 .todo-item:hover {
     background-color: #f5f5f5;
+}
+
+.todo-item.dragging, .todo-item.dragging * {
+    cursor: grabbing !important;
+    opacity: 0.9;
+    transform: scale(1.01);
+}
+
+.todo-item.drag-over {
+    background-color: #e9f4ff;
+    border-color: #a1c9ff;
 }
 
 .todo-buttons {
@@ -84,7 +99,7 @@ button:disabled {
 }
 
 .todo-text {
-    flex: 1 
+    flex: 1;
 }
 
 .todo-date {

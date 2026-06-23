@@ -19,6 +19,7 @@ export default function useTodos() {
     const [filter, setFilter] = useState("all")
     const [error, setError] = useState("");
     const [edit, setEdit] = useState(null);
+    const [draggedId, setDraggedId] = useState(null);
 
     useEffect(() => {
         localStorage.setItem("todos", JSON.stringify(todos))
@@ -42,6 +43,42 @@ export default function useTodos() {
 
     const isDuplicate = (text, id = null) => {
         return todos.some(todo => todo.text.toLowerCase() === text.toLowerCase() && todo.id !== id)
+    }
+
+    const handleDragStart = (id) => {
+        setDraggedId(id);
+        if (typeof document !== "undefined") {
+            document.body.classList.add("dragging");
+        }
+    }
+
+    const handleDragEnd = (id) => {
+        setDraggedId(null);
+        if (typeof document !== "undefined") {
+            document.body.classList.remove("dragging");
+        }
+    }
+
+    const handleDrop = (id) => {
+        setTodos((prev) => {
+            const draggedIndex = prev.findIndex((todo) => todo.id === draggedId);
+            const targetIndex = prev.findIndex((todo) => todo.id === id);
+
+            if(draggedIndex === -1 || targetIndex === -1) {
+                return prev;
+            }
+            const newTodos = [...prev]
+
+            const draggedTodo = newTodos.splice(draggedIndex, 1)[0];
+
+            newTodos.splice(targetIndex, 0, draggedTodo);
+            
+            return newTodos;
+        })
+            setDraggedId(null);
+            if (typeof document !== "undefined") {
+                document.body.classList.remove("dragging");
+            }
     }
 
     const addTodo = () => {
@@ -112,6 +149,6 @@ export default function useTodos() {
     }
 
     return {
-        todos, input, error, edit, startEdit, cancelEdit, handleInputChange, deleteTodo, addTodo, filter, filteredTodos, toggleTodo, setFilter, clearCompleted, activeTodos, updateTodo
+        todos, input, error, edit, startEdit, cancelEdit, handleInputChange, deleteTodo, addTodo, filter, filteredTodos, draggedId, handleDragStart, handleDragEnd, handleDrop, toggleTodo, setFilter, clearCompleted, activeTodos, updateTodo
     }
 }

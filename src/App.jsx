@@ -5,7 +5,7 @@ import FilterButtons from "./components/FilterButtons";
 import TodoForm from "./components/TodoForm";
 
 export default function App(){
-    const {input, error, handleInputChange, deleteTodo, edit, startEdit, cancelEdit, addTodo, filter, filteredTodos, toggleTodo, setFilter, activeTodos, clearCompleted, updateTodo} = useTodos();
+    const {input, error, handleInputChange, handleDrop, handleDragEnd, handleDragStart, deleteTodo, edit, startEdit, cancelEdit, addTodo, filter, filteredTodos, toggleTodo, setFilter, activeTodos, clearCompleted, updateTodo, draggedId} = useTodos();
     return(
         <div className="app">
         
@@ -35,6 +35,10 @@ export default function App(){
                 cancelEdit={cancelEdit}
                 startEdit={startEdit}
                 edit={edit}
+                draggedId={draggedId}
+                handleDrop={handleDrop}
+                handleDragStart={handleDragStart}
+                handleDragEnd={handleDragEnd}
             />
         </div>
     )

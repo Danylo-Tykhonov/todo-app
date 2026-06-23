@@ -1,17 +1,50 @@
 import { useState } from "react"
 import { motion } from "framer-motion"
 
-export default function TodoItem({todo, edit, deleteTodo, toggleTodo, startEdit, updateTodo, cancelEdit}) {
+export default function TodoItem({todo, edit, draggedId, handleDragStart, handleDragEnd, handleDrop, deleteTodo, toggleTodo, startEdit, updateTodo, cancelEdit}) {
     
     const [editValue, setEditValue] = useState(todo.text)
+    const [isOver, setIsOver] = useState(false)
+    const [isPointerDown, setIsPointerDown] = useState(false)
     const isEditing = edit === todo.id
+    const isDragging = draggedId === todo.id || isPointerDown
     const formatDate = (date) => {
         return new Date(date).toLocaleString()
     }
     
     return (
         <motion.div 
-        className="todo-item"
+        className={`todo-item ${isDragging ? "dragging" : ""} ${isOver ? "drag-over" : ""}`}
+        draggable
+        onPointerDown={() => setIsPointerDown(true)}
+        onPointerUp={() => setIsPointerDown(false)}
+        onPointerCancel={() => setIsPointerDown(false)}
+        onDragStart={(e) => {
+            e.dataTransfer.effectAllowed = "move";
+            e.dataTransfer.setData("text/plain", String(todo.id));
+            handleDragStart(todo.id);
+        }}
+        onDragEnter={() => setIsOver(true)}
+        onDragLeave={() => setIsOver(false)}
+        onDragOver={(e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = "move";
+        }}
+        onDrop={(e) => {
+            e.preventDefault();
+            setIsOver(false);
+            setIsPointerDown(false);
+            handleDrop(todo.id);
+        }}
+        onDragEnd={(e) => {
+            setIsOver(false);
+            setIsPointerDown(false);
+            handleDragEnd(todo.id);
+        }}
+        whileDrag={{
+            scale: 1.05,
+            opacity: 0.7
+        }}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
