@@ -67,35 +67,38 @@ button:disabled {
 }
 
 .todo-item {
+    cursor: grab;
+    user-select: none;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-    border-bottom: 1px solid #eee;
-    border-radius: 10px;
-    transition: background-color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
-    cursor: grab;
-    background-color: white;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+    transition: 0.2s;
+}
+
+.todo-item.dragging {
+    cursor: grabbing;
+    opacity: 0.5;
+    transform: scale(1.03);
+}
+
+.todo-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .todo-item:hover {
     background-color: #f5f5f5;
 }
 
-.todo-item.dragging, .todo-item.dragging * {
-    cursor: grabbing !important;
-    opacity: 0.9;
-    transform: scale(1.01);
-}
-
-.todo-item.drag-over {
-    background-color: #e9f4ff;
-    border-color: #a1c9ff;
-}
-
 .todo-buttons {
     display: flex;
     gap: 8px;
+    margin-left: 16px;
 }
 
 .todo-text {
@@ -105,6 +108,11 @@ button:disabled {
 .todo-date {
     font-size: 14px;
     opacity: 0.6;
+    margin-top: 4px
+}
+
+.todo-item:active {
+    cursor: grabbing;
 }
 
 .completed {
@@ -115,4 +123,14 @@ button:disabled {
 .active-filter {
     background-color: #007BFF;
     color: white;
+}
+
+.dragging {
+    opacity: 0.5;
+    transform: scale(1.05);
+}
+
+.drag-over {
+    background-color: #f5f9ff;
+    border: 1px dashed #007BFF;
 }
